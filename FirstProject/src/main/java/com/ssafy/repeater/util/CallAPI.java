@@ -1,5 +1,6 @@
 package com.ssafy.repeater.util;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +22,11 @@ public class CallAPI {
 
 	public static Map<String, Object> getUserShow(String handle) {
 		Map<String, Object> result = restTemplate.getForObject(root + "user/show?handle=" + handle, Map.class);
+		return result;
+	}
+
+	public List<Map> getProblemStats(String handle) {
+		List<Map> result = restTemplate.getForObject(root + "user/problem_stats?handle=" + handle, List.class);
 		return result;
 	}
 }

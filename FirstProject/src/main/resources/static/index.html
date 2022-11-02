@@ -5,20 +5,30 @@
 <title>Insert title here</title>
 <script>
       window.onload = function () {
-        console.log("click");
-        goInfo.addEventListener("click", async function () {
+    	  
+        goUserShow.addEventListener("click", async function () {
           let result = await fetch(
             "http://localhost:8080/solved/user/show?handle=" + handle.value
           ).then((res) => res.json());
-
-          console.log(result.background);
+          console.log(result);
         });
+        
+        goUserProblemStats.addEventListener("click", async function () {
+            let result = await fetch(
+              "http://localhost:8080/solved/user/problem_stats?handle=" + handle.value
+            ).then((res) => res.json());
+            console.log(result);
+          });
+        
       };
+      
+      
     </script>
 </head>
 <body>
 	<h1>박일규의 첫번째 프로젝트★</h1>
 	<input type="text" id="handle" value="qkrdlfrb123" />
-	<button id="goInfo">정보 확인</button>
+	<button id="goUserShow">정보 확인</button>
+	<button id="goUserProblemStats">푼 문제 확인</button>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.ssafy.repeater.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -25,5 +26,13 @@ public class SolvedController {
 		Map<String, Object> result = callAPI.getUserShow(handle);
 		log.info("getUserShow Result : {}", result);
 		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/problem_stats")
+	public ResponseEntity<?> getProblemStats(@RequestParam String handle) {
+		log.info("getUserShow Call {}", handle);
+		List<Map> result = callAPI.getProblemStats(handle);
+		log.info("getUserShow Result : {}", result);
+		return new ResponseEntity<List<Map>>(result, HttpStatus.OK);
 	}
 }
