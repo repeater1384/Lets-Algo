@@ -2,33 +2,91 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>Insert title here</title>
-<script>
-      window.onload = function () {
-    	  
-        goUserShow.addEventListener("click", async function () {
-          let result = await fetch(
-            "http://localhost:8080/solved/user/show?handle=" + handle.value
-          ).then((res) => res.json());
-          console.log(result);
-        });
-        
-        goUserProblemStats.addEventListener("click", async function () {
-            let result = await fetch(
-              "http://localhost:8080/solved/user/problem_stats?handle=" + handle.value
-            ).then((res) => res.json());
-            console.log(result);
-          });
-        
-      };
-      
-      
-    </script>
+<title>메인 페이지</title>
+
+<!-- 개발버전, 도움되는 콘솔 경고를 포함. -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- axios 모듈 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<style>
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table, td, th {
+	border-collapse: collapse;
+	border: 1px solid black;
+	text-align: center;
+}
+
+</style>
 </head>
 <body>
 	<h1>박일규의 첫번째 프로젝트★</h1>
-	<input type="text" id="handle" value="qkrdlfrb123" />
-	<button id="goUserShow">정보 확인</button>
-	<button id="goUserProblemStats">푼 문제 확인</button>
+	<div id="app">
+		<div>
+			<input type="text" id="handle" value="qkrdlfrb123" />
+			<button @click="userShowFN">정보 확인</button>
+			<button @click="userProblemStatsFN">푼 문제 확인</button>
+		</div>
+
+		<div>
+			<table id="userProblemStatsTable">
+				<thead>
+					<th>티어</th>
+					<th>성공</th>
+					<th>부분성공</th>
+					<th>실패</th>
+					<th>경험치</th>
+				</thead>
+				<tbody>
+					<tr v-for="(data) in userProblemStats">
+						<td>{{data.tier}}</td>
+						<td>{{data.solved}}</td>
+						<td>{{data.partial}}</td>
+						<td>{{data.tried}}</td>
+						<td>{{data.exp}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<a href="/home123">이동</a>
+
+	<script>
+      new Vue({
+        el: "#app",
+        data: {
+          userShow: "",
+          userProblemStats: "",
+        },
+        methods: {
+          async userShowFN() {
+            try {
+              await axios
+                .get("http://localhost:8080/solved/user/show?handle=" + handle.value)
+                .then((res) => {
+                  console.log(res);
+                  console.log(res.data);
+                  this.userShow = res.data;
+                });
+            } catch (error) {}
+          },
+          async userProblemStatsFN() {
+            console.log("!@#!32");
+            try {
+              await axios
+                .get("http://localhost:8080/solved/user/problem_stats?handle=" + handle.value)
+                .then((res) => {
+                  console.log(res.data);
+                  this.userProblemStats = res.data;
+                });
+              console.log(this.userProblemStats);
+            } catch (error) {}
+          },
+        },
+      });
+    </script>
 </body>
 </html>

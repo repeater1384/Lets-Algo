@@ -35,4 +35,5 @@ public class SolvedController {
 		log.info("getUserShow Result : {}", result);
 		return new ResponseEntity<List<Map>>(result, HttpStatus.OK);
 	}
+	
 }
