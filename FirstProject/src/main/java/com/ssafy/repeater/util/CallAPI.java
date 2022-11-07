@@ -27,18 +27,11 @@ public class CallAPI {
 		return result;
 	}
 
-	public List<Map> getProblemStats(String handle) {
-		List<Map> result = restTemplate.getForObject(root + "user/problem_stats?handle=" + handle, List.class);
-		for (Map map : result) {
-			map.put("tier", GetGrade4Level.getGrade((int) map.get("level")));
-		}
-		return result;
-	}
-
-	public List<Map> getProblemStats(int problemId) {
-		List<Map> result = restTemplate.getForObject(root + "problem/show?problemId=" + problemId, List.class);
-		for (Map map : result) {
-			log.info("{} -> {}", map.get("level"), GetGrade4Level.getGrade((int) map.get("level")));
+	public List<Map<String, Object>> getProblemStats(String handle) {
+		List<Map<String,Object>> result = restTemplate.getForObject(root + "user/problem_stats?handle=" + handle,
+				List.class);
+		for (Map<String, Object> map : result) {
+			map.put("tier", ParseUtil.getGrade4Level((int) map.get("level")));
 		}
 		return result;
 	}

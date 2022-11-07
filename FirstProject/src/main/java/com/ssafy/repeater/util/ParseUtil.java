@@ -1,6 +1,6 @@
 package com.ssafy.repeater.util;
 
-public class GetGrade4Level {
+public class ParseUtil {
 	// solved.ac API 에서 제공하는 문제 레벨을 등급으로 바꾸어주는 util입니다.
 	// EX) 3 -> Bronze3, 4 -> Broneze2
 
@@ -9,7 +9,7 @@ public class GetGrade4Level {
 	// 1,2,3,4,5 -> 브론즈
 	// 6,7,8,9,10 -> 실버 ...
 
-	static String getGrade(int level) {
+	static String getGrade4Level(int level) {
 		if (level == 0) {
 			return "Unrated";
 		}

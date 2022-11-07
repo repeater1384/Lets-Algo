@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.repeater.util.CallAPI;
+import com.ssafy.repeater.util.CrawlingUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,13 +28,20 @@ public class SolvedController {
 		log.info("getUserShow Result : {}", result);
 		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 	}
-	
-	@GetMapping("/user/problem_stats")
+
+	@GetMapping("/user/problem-stats")
 	public ResponseEntity<?> getProblemStats(@RequestParam String handle) {
 		log.info("getUserShow Call {}", handle);
-		List<Map> result = callAPI.getProblemStats(handle);
+		List<Map<String, Object>> result = callAPI.getProblemStats(handle);
 		log.info("getUserShow Result : {}", result);
-		return new ResponseEntity<List<Map>>(result, HttpStatus.OK);
+		return new ResponseEntity<List<Map<String, Object>>>(result, HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/user/problem-stats-detail")
+	public ResponseEntity<?> getProblemStatsDetail(@RequestParam String id, @RequestParam String problemNo) {
+		log.info("getProblemStatsDetail Call {}, {}", id, problemNo);
+		List<Map<String, Object>> result = CrawlingUtil.doCrawl(id, problemNo);
+		return new ResponseEntity<List<Map<String, Object>>>(result, HttpStatus.OK);
+	}
+
 }

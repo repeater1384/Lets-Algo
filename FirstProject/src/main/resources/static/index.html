@@ -19,20 +19,54 @@ table, td, th {
 	border: 1px solid black;
 	text-align: center;
 }
-
 </style>
 </head>
 <body>
 	<h1>박일규의 첫번째 프로젝트★</h1>
 	<div id="app">
 		<div>
-			<input type="text" id="handle" value="qkrdlfrb123" />
+			<input type="text" v-model="handle" value="qkrdlfrb123"
+				@keyup="userProblemStatsFN" /> <input type="text"
+				v-model="problemNo" value="1000" @keyup="userProblemStatsDetailFN" />
 			<button @click="userShowFN">정보 확인</button>
 			<button @click="userProblemStatsFN">푼 문제 확인</button>
+			<button @click="userProblemStatsDetailFN">세부정보 확인(크롤링)</button>
 		</div>
 
 		<div>
+			<table id="userProblemStatsDetailTable">
+				<h3>{{handle}}의 {{problemNo}}번 문제 채점결과</h3>
+				<thead>
+					<th>제출번호</th>
+					<th>유저아이디</th>
+					<th>문제번호</th>
+					<th>채점결과</th>
+					<th>메모리</th>
+					<th>시간</th>
+					<th>코드길이</th>
+					<th>사용언어</th>
+					<th>제출시간</th>
+				</thead>
+				<tbody>
+					<tr v-for="(data) in userProblemStatsDetail">
+						<td>{{data.submitNo}}</td>
+						<td>{{data.id}}</td>
+						<td>{{data.problemNo}}</td>
+						<td>{{data.result}}</td>
+						<td>{{data.memory ? data.memory : 0}} KB</td>
+						<td>{{data.time ? data.time : 0}} ms</td>
+						<td>{{data.codeLen}} B</td>
+						<td>{{data.lang}}</td>
+						<td>{{data.submitDate}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div>
 			<table id="userProblemStatsTable">
+				<h3>{{handle}}의 유저정보</h3>
 				<thead>
 					<th>티어</th>
 					<th>성공</th>
@@ -52,20 +86,24 @@ table, td, th {
 			</table>
 		</div>
 	</div>
+	</div>
 	<a href="/home123">이동</a>
 
 	<script>
       new Vue({
         el: "#app",
         data: {
+          handle:"",
+          problemNo:"",
           userShow: "",
           userProblemStats: "",
+          userProblemStatsDetail: "",
         },
         methods: {
           async userShowFN() {
             try {
               await axios
-                .get("http://localhost:8080/solved/user/show?handle=" + handle.value)
+                .get("http://localhost:8080/solved/user/show?handle=" + this.handle)
                 .then((res) => {
                   console.log(res);
                   console.log(res.data);
@@ -74,19 +112,41 @@ table, td, th {
             } catch (error) {}
           },
           async userProblemStatsFN() {
-            console.log("!@#!32");
+        	  console.log("userProblemStatsFN CALL!!")
             try {
               await axios
-                .get("http://localhost:8080/solved/user/problem_stats?handle=" + handle.value)
+                .get("http://localhost:8080/solved/user/problem-stats?handle=" + this.handle)
                 .then((res) => {
                   console.log(res.data);
                   this.userProblemStats = res.data;
                 });
               console.log(this.userProblemStats);
-            } catch (error) {}
+            } catch (error) {
+            	this.userProblemStats = "";
+            }
+          },
+
+          async userProblemStatsDetailFN() {
+            try {
+              await axios
+                .get(
+                  "http://localhost:8080/solved/user/problem-stats-detail?id=" +
+                  this.handle +
+                    "&problemNo=" +
+                    this.problemNo
+                )
+                .then((res) => {
+                  console.log(res.data);
+                  this.userProblemStatsDetail = res.data;
+                });
+              console.log(this.userProblemStatsDetail);
+            } catch (error) {
+            	this.userProblemStatsDetail = "";
+            }
+        	}
           },
         },
-      });
+      );
     </script>
 </body>
 </html>
