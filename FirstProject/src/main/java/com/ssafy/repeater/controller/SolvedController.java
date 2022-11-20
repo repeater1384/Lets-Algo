@@ -40,7 +40,8 @@ public class SolvedController {
 	@GetMapping("/user/problem-stats-detail")
 	public ResponseEntity<?> getProblemStatsDetail(@RequestParam String id, @RequestParam String problemNo) {
 		log.info("getProblemStatsDetail Call {}, {}", id, problemNo);
-		List<Map<String, Object>> result = CrawlingUtil.doCrawl(id, problemNo);
+//		List<Map<String, Object>> result = CrawlingUtil.doCrawl(id, problemNo);
+		List<Map<String, Object>> result = CrawlingUtil.doAllCrawl(new String[] {"qkrdlfrb123","ghs93","yb5464","skyna"},problemNo);
 		return new ResponseEntity<List<Map<String, Object>>>(result, HttpStatus.OK);
 	}
 
